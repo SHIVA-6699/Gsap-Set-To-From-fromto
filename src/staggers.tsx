@@ -1,40 +1,46 @@
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import "./App.css";
+import { useLayoutEffect } from "react";
 import MotionPathPlugin from "gsap/MotionPathPlugin";
 gsap.registerPlugin(MotionPathPlugin);
 
 function Sta() {
-    // Create an array of refs inside the functional component
-    const ref1 = Array.from({ length: 10 }, () => useRef<HTMLDivElement | null>(null));
+    const ref = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        // Inside the useEffect hook, we can safely access the refs
-        ref1.forEach((ref) => {
+    useLayoutEffect(() => {
+    
+      
             if (ref.current) {
-                gsap.set(ref.current, {
+                gsap.set(".box", {
                     borderRadius: 0,
                     background: "green"
                 });
-                gsap.to(ref.current, {
-                    opacity: 1,
+                gsap.to(".box", {
                     borderRadius: 100,
                     background: "orange",
-                    repeat: -1,
-                    duration: 2,
+                    duration:2,
                     y: -100,
-                    yoyo: true
-                });
-            }
+                    stagger:{
+                        each: 0.1,
+                        from:11,
+                        grid: "auto",
+                        ease: "power2.inOut",
+                        repeat: -1,
+                        yoyo:true
+                },
         });
-    }, []); // Empty dependency array to run the effect once
-
+    }}, []);
     return (
         <div className="con">
-            {/* Map over the refs array and render the div elements */}
-            {ref1.map((ref, index) => (
-                <div className="box" key={index} ref={ref}></div>
-            ))}
+        
+                <div className="box" ref={ref}></div>
+                <div className="box" ref={ref}></div>
+                <div className="box" ref={ref}></div>
+                <div className="box" ref={ref}></div>
+                <div className="box" ref={ref}></div>
+                <div className="box" ref={ref}></div>
+          
         </div>
     );
 }
